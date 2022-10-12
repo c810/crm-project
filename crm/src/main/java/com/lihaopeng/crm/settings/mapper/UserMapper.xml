@@ -33,6 +33,7 @@
     id, login_act, name, login_pwd, email, expire_time, lock_state, deptno, allow_ips, 
     createTime, create_by, edit_time, edit_by
   </sql>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     <!--
       WARNING - @mbggenerated
@@ -229,6 +230,7 @@
     where id = #{id,jdbcType=CHAR}
   </update>
 
+  <!-- TODO: 008 通过UserServiceImpl访问到此,执行sql查询,并返回找到的user [sd用户登录8/9] -->
   <!-- id要与接口中方法名相同 -->
   <!-- resultMap="BaseResultMap" 根据我们的查询字段,封装实体类对象 -->
   <select id="selectUserByLoginActAndPwd" parameterType="map" resultMap="BaseResultMap">

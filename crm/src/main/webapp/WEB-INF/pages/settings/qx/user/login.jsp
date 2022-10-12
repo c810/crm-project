@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%--动态地址--%>
 <%
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
@@ -15,8 +16,20 @@
     <link href="jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
     <script type="text/javascript" src="jquery/jquery-1.11.1-min.js"></script>
     <script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
+
+    <%-- TODO: 005 来到登陆页面后,用户输入用户名和密码,点击登录按钮,发送异步请求 [sd用户登录1/2/3] --%>
 	<script type="text/javascript">
         $(function () {
+            // 给整个浏览器窗口添加键盘按下事件:回车键登录
+            // 后期可以自己优化一下:输入用户名后按回车键,光标自动跳到密码框(尚未优化)
+            $(window).keydown(function () {
+                // 如果按的是回车键,则提交登录请求
+                if(event.keyCode==13){
+                    // 模拟登录按钮单击事件
+                    $("#loginBtn").click();
+                }
+            });
+
             // 给登录按钮添加单机事件
             $("#loginBtn").click(function () {
                 // 收集参数
@@ -30,6 +43,7 @@
                 var loginAct = $.trim($("#loginAct").val());
                 var loginPwd = $.trim($("#loginPwd").val());
                 var isRemPwd = $("#isRemPwd").prop("checked");
+
                 // 表单验证
                 if(loginAct==""){
                     alert("用户名不能为空");
@@ -39,6 +53,9 @@
                     alert("密码不能为空");
                     return;
                 }
+                // 为了提高用户体验,在用户输入完毕点击登录按钮后,显示正在验证
+                $("#msg").text("正在努力验证...")
+
                 // 发送请求(异步请求)
                 $.ajax({
                     // 表示要把请求发到哪里去,我们要发送到UserController的public Object login()方法里,
@@ -52,6 +69,7 @@
                     // 这里get和post都行,但是能用post就用post
                     type:'post',
                     dataType:'json',
+                    // TODO: 010 接收到UserController响应回来的json字符串,渲染页面
                     // 用回调函数处理响应回来的json字符串
                     success:function (data) {
                         if(data.code=="1"){
@@ -64,10 +82,28 @@
                         }else {
                             // 登录失败,局部刷新提示信息
                             // html既可以写文本信息,也可以写标签,而text只能写文本信息,这里没有标签所以两者都可以
-                            //$('#msg').text(data.message);
+                            // $('#msg').text(data.message);
                             $('#msg').html(data.message);
                         }
-                    }
+                    },
+                    // 当ajax向后台发送请求之前,会自动执行本函数
+                    // 该函数的返回值能够决定ajax是否真正象后台发送请求:
+                    // 如果该函数返回true,则ajax会真正向后台发送请求;否则,如果返回false,则ajax放弃向后台发送请求
+                    // 但不知道为什么我这里这么做不行,好像没有beforeSend方法???可能是版本问题
+                    // beforeSend:function () {
+                    //     // 表单验证
+                    //     // 也可以放到这里
+                    //     if(loginAct==""){
+                    //         alert("用户名不能为空");
+                    //         return false;
+                    //     }
+                    //     if(loginPwd==""){
+                    //         alert("密码不能为空");
+                    //         return false;
+                    //     }
+                    //     $('#msg').text(data.message);
+                    //     return true;
+                    // }
                 });
             });
         });
@@ -90,14 +126,21 @@
             <form action="workbench/index.html" class="form-horizontal" role="form">
                 <div class="form-group form-group-lg">
                     <div style="width: 350px;">
-                        <input class="form-control" id="loginAct" type="text" placeholder="用户名">
+                        <input class="form-control" id="loginAct" type="text" value="${cookie.loginAct.value}" placeholder="用户名">
                     </div>
                     <div style="width: 350px; position: relative;top: 20px;">
-                        <input class="form-control" id="loginPwd" type="password" placeholder="密码">
+                        <input class="form-control" id="loginPwd" type="password" value="${cookie.loginPwd.value}" placeholder="密码">
                     </div>
                     <div class="checkbox" style="position: relative;top: 30px; left: 10px;">
                         <label>
-                            <input type="checkbox" id="isRemPwd"> 十天内免登录
+                            <%-- 但是这么处理有bug,每次帮我们选上复选框后,就会刷新cookie有效天数,又更新为10天,如此只要不取消勾选,便永远也不会过期 --%>
+                            <c:if test="${not empty cookie.loginAct and not empty cookie.loginPwd}">
+                                <input type="checkbox" id="isRemPwd" checked="checked">
+                            </c:if>
+                            <c:if test="${empty cookie.loginAct or empty cookie.loginPwd}">
+                                <input type="checkbox" id="isRemPwd">
+                            </c:if>
+                            十天内免登录
                         </label>
                         &nbsp;&nbsp;
                         <span id="msg"></span>

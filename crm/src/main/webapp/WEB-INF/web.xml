@@ -44,6 +44,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
     <servlet-name>dispatcher</servlet-name>
     <url-pattern>*.do</url-pattern>
   </servlet-mapping>
+  <!-- TODO: 001 默认欢迎页面 [sd首页1] -->
   <!-- 欢迎页，默认进入index controller -->
   <welcome-file-list>
     <welcome-file>/</welcome-file>

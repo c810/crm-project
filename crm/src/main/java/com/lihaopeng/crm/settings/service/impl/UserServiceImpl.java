@@ -19,6 +19,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
+    // TODO: 007 被Controller层调用,则去调用UserMapper查询数据库中的数据 [sd用户登录7]
     @Override
     public User queryUserByLoginActAndPwd(Map<String, Object> map) {
         return userMapper.selectUserByLoginActAndPwd(map);
