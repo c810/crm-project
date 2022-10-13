@@ -1,9 +1,9 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %> <%-- 1 --%>
-<%String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";%> <%-- 2 --%>
-<%-- 以后这三步直接复制粘贴就行,然后把去掉,然后把文件名.html改成.jsp即可 --%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
-    <base href="<%=basePath%>"> <%-- 3 --%>
+    <base href="<%=basePath%>">
     <meta charset="UTF-8">
     <link href="jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
     <script type="text/javascript" src="jquery/jquery-1.11.1-min.js"></script>
@@ -35,7 +35,7 @@
             });
 
 
-            window.open("main/index.html", "workareaFrame");
+            window.open("workbench/main/index.do", "workareaFrame");
 
             // 给确定按钮添加单击事件
             $("#logoutBtn").click(function () {
@@ -49,7 +49,7 @@
 </head>
 <body>
 
-    <!-- 我的资料 -->
+    <!-- 我的资料的模态窗口 -->
     <div class="modal fade" id="myInformation" role="dialog">
         <div class="modal-dialog" role="document" style="width: 30%;">
             <div class="modal-content">
@@ -177,7 +177,7 @@
         <div id="navigation" style="left: 0px; width: 18%; position: relative; height: 100%; overflow:auto;">
 
             <ul id="no1" class="nav nav-pills nav-stacked">
-                <li class="liClass"><a href="main/index.html" target="workareaFrame"><span
+                <li class="liClass"><a href="workbench/main/index.do" target="workareaFrame"><span
                         class="glyphicon glyphicon-home"></span> 工作台</a></li>
                 <li class="liClass"><a href="javascript:void(0);" target="workareaFrame"><span
                         class="glyphicon glyphicon-tag"></span> 动态</a></li>
@@ -185,7 +185,7 @@
                         class="glyphicon glyphicon-time"></span> 审批</a></li>
                 <li class="liClass"><a href="javascript:void(0);" target="workareaFrame"><span
                         class="glyphicon glyphicon-user"></span> 客户公海</a></li>
-                <li class="liClass"><a href="activity/index.html" target="workareaFrame"><span
+                <li class="liClass"><a href="workbench/activity/index.do" target="workareaFrame"><span
                         class="glyphicon glyphicon-play-circle"></span> 市场活动</a></li>
                 <li class="liClass"><a href="clue/index.html" target="workareaFrame"><span
                         class="glyphicon glyphicon-search"></span> 线索（潜在客户）</a></li>

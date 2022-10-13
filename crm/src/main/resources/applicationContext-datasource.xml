@@ -30,7 +30,8 @@
     <!--我们只提供mapper接口,以及mapper接口对应的映射文件-->
     <!--会自动生成接口对应的实现类,通过那些类去访问数据库-->
     <bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.lihaopeng.crm.settings.mapper"/>
+        <property name="basePackage" value="com.lihaopeng.crm.settings.mapper,
+                                            com.lihaopeng.crm.workbench.mapper"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 
